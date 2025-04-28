@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  nirax-lc-frontend:
+    build: .
+    ports:
+      - "3501:3501"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
