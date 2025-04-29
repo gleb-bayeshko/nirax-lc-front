@@ -23,10 +23,8 @@ import { Button } from "@/components/ui/button";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 
-// Константа с пунктами меню
 const menuItems = [
   { name: "Заявки", path: "/admin" },
-  // Можно добавить дополнительные пункты меню по мере необходимости
 ];
 
 export default function AdminLayout({
@@ -35,7 +33,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const pathname = usePathname(); // Получаем текущий путь
+  const pathname = usePathname();
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -72,7 +70,7 @@ export default function AdminLayout({
 
       {/* Основной контент */}
       <div className="flex-1 flex flex-col">
-        <header className="bg-white shadow p-4 px-10 flex justify-end items-center fixed w-[calc(100%-200px)]">
+        <header className="bg-white shadow p-4 px-10 flex justify-end items-center fixed w-[calc(100%-200px)] z-10">
           <div className="mr-4">Администратор</div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="cursor-pointer">

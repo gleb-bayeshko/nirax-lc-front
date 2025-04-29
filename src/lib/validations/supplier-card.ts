@@ -10,12 +10,9 @@ const optionalStringSchema = z
 
 export const SupplierSchema = z.object({
   companyName: z.string().min(2, "Название компании слишком короткое"),
-  website: optionalStringSchema.refine(
-    (val) => val === "" || z.string().url().safeParse(val).success,
-    {
-      message: "Некорректная ссылка на сайт",
-    }
-  ),
+  website: optionalStringSchema.refine((val) => val === "" || val.length >= 0, {
+    message: "Некорректная ссылка на сайт",
+  }),
   description: optionalStringSchema.refine(
     (val) => val === "" || val.length >= 10,
     {
@@ -26,31 +23,37 @@ export const SupplierSchema = z.object({
     message: "Введите корректный номер телефона",
   }),
   assortment: optionalStringSchema.refine(
-    (val) => val === "" || val.length >= 3,
+    (val) => val === "" || val.length >= 0,
     {
       message: "Введите ассортимент товаров",
     }
   ),
   storageArea: optionalStringSchema.refine(
-    (val) => val === "" || val.length >= 3,
+    (val) => val === "" || val.length >= 0,
     {
-      message: "Введите зону хранения товаров",
+      message: "Введите складские площади",
     }
   ),
   ownBrand: optionalStringSchema.refine(
-    (val) => val === "" || val.length >= 3,
+    (val) => val === "" || val.length >= 0,
     {
       message: "Введите собственный бренд",
     }
   ),
-  regions: optionalStringSchema.refine((val) => val === "" || val.length >= 3, {
+  regions: optionalStringSchema.refine((val) => val === "" || val.length >= 0, {
     message: "Введите регионы доставки",
   }),
+  deliveryOptions: optionalStringSchema.refine(
+    (val) => val === "" || val.length >= 0,
+    {
+      message: "Введите варианты доставки",
+    }
+  ),
   priceListToEmail: z.boolean().default(false),
   workByApi: z.boolean().default(false),
-  serverSpeed: z.number().min(0, "Укажите скорость ответа сервера").default(0),
+  serverSpeed: z.any(),
   apiDocUrl: optionalStringSchema.refine(
-    (val) => val === "" || z.string().url().safeParse(val).success,
+    (val) => val === "" || val.length >= 0,
     {
       message: "Некорректная ссылка на документацию API",
     }

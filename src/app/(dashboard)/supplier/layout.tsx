@@ -72,7 +72,7 @@ export default function SupplierLayout({
 
       {/* Основной контент */}
       <div className="flex-1 flex flex-col">
-        <header className="bg-white shadow p-4 px-10 flex justify-end items-center fixed w-[calc(100%-200px)]">
+        <header className="bg-white shadow p-4 px-10 flex justify-end items-center fixed w-[calc(100%-200px)] z-10">
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="cursor-pointer">
               <RxAvatar className="w-[24px] h-[24px] text-primary" />

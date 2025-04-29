@@ -54,12 +54,12 @@ export function SupplierPhotos({ supplierId }: { supplierId: number }) {
   const canUploadMore = totalPhotosCount < MAX_PHOTOS;
 
   return (
-    <div className="space-y-4 relative">
+    <div className="space-y-4 relative mb-[10px]">
       {(isLoading || isUploading || isDeleting) && (
         <div className="absolute left-0 top-0 w-full h-full bg-[#ffffff69]" />
       )}
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl mb-4 mt-6">{`Фотографии (${totalPhotosCount}/10)`}</h2>
+        <p className="text-sm font-medium text-gray-700 mb-1">{`Фотографии (${totalPhotosCount}/10)`}</p>
       </div>
 
       {/* Превью всех фотографий */}
@@ -69,7 +69,7 @@ export function SupplierPhotos({ supplierId }: { supplierId: number }) {
           <div key={`existing-${index}`} className="relative group">
             <div className="w-32 h-32 relative rounded-md overflow-hidden border">
               <Image
-                src={photoUrl}
+                src={`https://web.nirax.ru/nirax-app${photoUrl}`}
                 alt={`Фото поставщика ${index + 1}`}
                 fill
                 className="object-cover"
