@@ -13,7 +13,7 @@ export function useDeleteSupplierPhotos(id: number) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["supplierData", id],
+        queryKey: ["supplierDataImages", id],
       });
     },
   });

@@ -10,3 +10,13 @@ export function useSupplierData(id: number) {
     },
   });
 }
+
+export function useSupplierDataImages(id: number) {
+  return useQuery({
+    queryKey: ["supplierDataImages", id],
+    queryFn: async () => {
+      const response = await axios.get(`/supplier-cards/${id}/image`);
+      return response.data.result;
+    },
+  });
+}

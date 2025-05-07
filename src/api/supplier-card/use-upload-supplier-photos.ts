@@ -24,7 +24,7 @@ export function useUploadSupplierPhotos(id: number) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["supplierData", id],
+        queryKey: ["supplierDataImages", id],
       });
     },
   });

@@ -2,7 +2,7 @@
 import { useState, ChangeEvent } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
-import { useSupplierData } from "@/api/supplier-card/user-supplier-data";
+import { useSupplierData, useSupplierDataImages } from "@/api/supplier-card/user-supplier-data";
 import { useUploadSupplierPhotos } from "@/api/supplier-card/use-upload-supplier-photos";
 import { useDeleteSupplierPhotos } from "@/api/supplier-card/use-delete-supplier-photos";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 const MAX_PHOTOS = 10;
 
 export function SupplierPhotos({ supplierId }: { supplierId: number }) {
-  const { data, isLoading } = useSupplierData(supplierId);
+  const { data, isLoading } = useSupplierDataImages(supplierId);
   const { mutate: uploadPhotos, isPending: isUploading } =
     useUploadSupplierPhotos(supplierId);
   const { mutate: deletePhoto, isPending: isDeleting } =
@@ -21,7 +21,7 @@ export function SupplierPhotos({ supplierId }: { supplierId: number }) {
     if (!e.target.files) return;
 
     const newFiles = Array.from(e.target.files);
-    const currentCount = (data?.photos?.length || 0) + selectedFiles.length;
+    const currentCount = (data?.length || 0) + selectedFiles.length;
 
     if (currentCount + newFiles.length > MAX_PHOTOS) {
       alert(`Максимальное количество фотографий: ${MAX_PHOTOS}`);
@@ -50,7 +50,7 @@ export function SupplierPhotos({ supplierId }: { supplierId: number }) {
     deletePhoto([photoUrl]);
   };
 
-  const totalPhotosCount = (data?.photos?.length || 0) + selectedFiles.length;
+  const totalPhotosCount = (data?.length || 0) + selectedFiles.length;
   const canUploadMore = totalPhotosCount < MAX_PHOTOS;
 
   return (
@@ -65,7 +65,7 @@ export function SupplierPhotos({ supplierId }: { supplierId: number }) {
       {/* Превью всех фотографий */}
       <div className="flex flex-wrap gap-4">
         {/* Существующие фото из data */}
-        {data?.photos?.map((photoUrl, index) => (
+        {data?.map((photoUrl, index) => (
           <div key={`existing-${index}`} className="relative group">
             <div className="w-32 h-32 relative rounded-md overflow-hidden border">
               <Image

@@ -26,6 +26,7 @@ import Link from "next/link";
 // Константа с пунктами меню
 const menuItems = [
   { name: "Профиль", path: "/supplier" },
+  { name: "История заказов", path: "/supplier/orders" },
   // Можно добавить дополнительные пункты меню по мере необходимости
 ];
 
