@@ -34,8 +34,21 @@ export default function OrdersPageContent() {
   const currentPage = Number(searchParams.get("page")) || 1;
   const limit = 40;
 
-  const [dateFrom, setDateFrom] = useState(searchParams.get("dateFrom") || "");
-  const [dateTo, setDateTo] = useState(searchParams.get("dateTo") || "");
+  const today = new Date();
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(today.getDate() - 29);
+
+  const formatDate = (date: Date) => date.toISOString().slice(0, 10);
+
+  const defaultDateFrom = formatDate(thirtyDaysAgo);
+  const defaultDateTo = formatDate(today);
+
+  const [dateFrom, setDateFrom] = useState(
+    searchParams.get("dateFrom") || defaultDateFrom
+  );
+  const [dateTo, setDateTo] = useState(
+    searchParams.get("dateTo") || defaultDateTo
+  );
   const [dateSort, setDateSort] = useState<"ASC" | "DESC">(
     (searchParams.get("sort") as "ASC" | "DESC") || "DESC"
   );
@@ -80,47 +93,57 @@ export default function OrdersPageContent() {
     <div className="container mx-auto pb-8 w-full">
       <h1 className="text-2xl font-bold mb-6">История заказов</h1>
 
-      <div className="flex items-end gap-4 mb-6 flex-wrap">
-        <div className="flex flex-col">
-          <Label htmlFor="sort" className="mb-2">
-            Сортировка
-          </Label>
-          <Select
-            value={dateSort}
-            onValueChange={(value: "ASC" | "DESC") => setDateSort(value)}
-          >
-            <SelectTrigger id="sort" className="w-[160px]">
-              <SelectValue placeholder="Сортировка" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="DESC">Сначала новые</SelectItem>
-              <SelectItem value="ASC">Сначала старые</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+      <div className="flex justify-between">
+        <div className="flex items-end gap-4 mb-6 flex-wrap ">
+          <div className="flex flex-col">
+            <Label htmlFor="sort" className="mb-2">
+              Сортировка
+            </Label>
+            <Select
+              value={dateSort}
+              onValueChange={(value: "ASC" | "DESC") => setDateSort(value)}
+            >
+              <SelectTrigger id="sort" className="w-[160px]">
+                <SelectValue placeholder="Сортировка" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="DESC">Сначала новые</SelectItem>
+                <SelectItem value="ASC">Сначала старые</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-        <div className="flex flex-col">
-          <Label htmlFor="dateFrom" className="mb-2">
-            С даты
-          </Label>
-          <Input
-            type="date"
-            id="dateFrom"
-            value={dateFrom}
-            onChange={(e) => setDateFrom(e.target.value)}
-          />
-        </div>
+          <div className="flex flex-col">
+            <Label htmlFor="dateFrom" className="mb-2">
+              С даты
+            </Label>
+            <Input
+              type="date"
+              id="dateFrom"
+              value={dateFrom}
+              onChange={(e) => setDateFrom(e.target.value)}
+            />
+          </div>
 
-        <div className="flex flex-col">
-          <Label htmlFor="dateTo" className="mb-2">
-            По дату
-          </Label>
-          <Input
-            type="date"
-            id="dateTo"
-            value={dateTo}
-            onChange={(e) => setDateTo(e.target.value)}
-          />
+          <div className="flex flex-col">
+            <Label htmlFor="dateTo" className="mb-2">
+              По дату
+            </Label>
+            <Input
+              type="date"
+              id="dateTo"
+              value={dateTo}
+              onChange={(e) => setDateTo(e.target.value)}
+            />
+          </div>
+        </div>
+        <div>
+          {`Итого за период: количество `}
+          <span className="font-bold">{`${data?.totalDeliveryCount}`}</span>
+          {`, сумма `}
+          <span className="font-bold">{`${data?.totalPriceIn?.toLocaleString(
+            "ru-RU"
+          )} ₽`}</span>
         </div>
       </div>
 

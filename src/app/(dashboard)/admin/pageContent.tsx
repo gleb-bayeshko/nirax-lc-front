@@ -76,6 +76,10 @@ export default function AdminPageContent() {
     });
   };
 
+  const handleNewSupplierSelect = () => {
+    enqueueSnackbar("Заявка принята", { variant: "success" });
+  };
+
   const handleReject = (applicationId: number) => {
     rejectApplication({
       id: applicationId,
@@ -85,6 +89,10 @@ export default function AdminPageContent() {
       enqueueSnackbar("Заявка отклонена", { variant: "success" });
     });
   };
+
+  const currentApplicationInfo = selectedAppId
+    ? data?.data?.find((c) => c.id === selectedAppId)
+    : {};
 
   return (
     <>
@@ -213,7 +221,12 @@ export default function AdminPageContent() {
             setIsSelectModalOpen(false);
             setSelectedAppId(null);
           }}
-          onSelect={handleSupplierSelect}
+          onSelect={handleNewSupplierSelect}
+          email={currentApplicationInfo?.email || ""}
+          contactPerson={currentApplicationInfo?.fullName || ""}
+          phone={currentApplicationInfo?.phone || ""}
+          company={currentApplicationInfo?.companyName || ""}
+          applicationId={selectedAppId}
         />
 
         <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>

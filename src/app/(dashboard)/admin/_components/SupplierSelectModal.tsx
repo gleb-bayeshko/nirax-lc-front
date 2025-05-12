@@ -24,13 +24,27 @@ import { Textarea } from "@/components/ui/textarea";
 interface SupplierSelectModalProps {
   open: boolean;
   onClose: () => void;
-  onSelect: (supplierId: number) => void;
+  onSelect: (supplierId?: number) => void;
+  site?: string;
+  email?: string;
+  contactPerson?: string;
+  phone?: string;
+  company?: string;
+  description?: string;
+  applicationId?: number | null;
 }
 
 export function SupplierSelectModal({
   open,
   onClose,
   onSelect,
+  company,
+  contactPerson,
+  description,
+  email,
+  phone,
+  site,
+  applicationId,
 }: SupplierSelectModalProps) {
   const { data: suppliers, isLoading } = useSuppliersList();
   const { mutateAsync: createSupplier, isPending: isCreating } =
@@ -47,20 +61,24 @@ export function SupplierSelectModal({
 
   const form = useForm<CreateSupplierSchema>({
     resolver: zodResolver(createSupplierSchema),
-    defaultValues: {
-      site: "",
-      siteRU: "",
-      description: "",
+    values: {
+      site: site || "",
+      email: email || "",
+      contactPerson: contactPerson || "",
+      phone: phone || "",
+      company: company || "",
+      description: description || "",
     },
   });
 
   const onSubmit = async (values: CreateSupplierSchema) => {
     try {
-      const res = await createSupplier(values);
-      if (res?.result?.idSupplier) {
-        onSelect(res.result.idSupplier);
-        onClose();
-      }
+      const res = await createSupplier({
+        ...values,
+        applicationId: applicationId,
+      });
+      onSelect();
+      onClose();
     } catch (error) {
       console.error("Ошибка при создании поставщика", error);
     }
@@ -113,28 +131,52 @@ export function SupplierSelectModal({
               </ScrollArea>
             )}
           </TabsContent>
-
+          {/* 
           <TabsContent value="new" className="max-w-full">
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <Input placeholder="example.com" {...form.register("site")} />
+              <Input
+                placeholder="Сайт поставщика в формате example.com"
+                {...form.register("site")}
+              />
               {form.formState.errors.site && (
                 <p className="text-sm text-red-500">
                   {form.formState.errors.site.message}
                 </p>
               )}
 
-              <Input
-                placeholder="Сайт поставщика на русском"
-                {...form.register("siteRU")}
-              />
-              {form.formState.errors.siteRU && (
+              <Input placeholder="Email" {...form.register("email")} />
+              {form.formState.errors.email && (
                 <p className="text-sm text-red-500">
-                  {form.formState.errors.siteRU.message}
+                  {form.formState.errors.email.message}
+                </p>
+              )}
+
+              <Input placeholder="Компания" {...form.register("company")} />
+              {form.formState.errors.company && (
+                <p className="text-sm text-red-500">
+                  {form.formState.errors.company.message}
+                </p>
+              )}
+
+              <Input
+                placeholder="Контактное лицо"
+                {...form.register("contactPerson")}
+              />
+              {form.formState.errors.contactPerson && (
+                <p className="text-sm text-red-500">
+                  {form.formState.errors.contactPerson.message}
+                </p>
+              )}
+
+              <Input placeholder="Телефон" {...form.register("phone")} />
+              {form.formState.errors.phone && (
+                <p className="text-sm text-red-500">
+                  {form.formState.errors.phone.message}
                 </p>
               )}
 
               <Textarea
-                placeholder="Описание работы API поставщика"
+                placeholder="Описание"
                 className="resize-none min-h-[200px] max-w-full"
                 {...form.register("description")}
               />
@@ -149,6 +191,7 @@ export function SupplierSelectModal({
               </Button>
             </form>
           </TabsContent>
+           */}
         </Tabs>
       </DialogContent>
     </Dialog>
