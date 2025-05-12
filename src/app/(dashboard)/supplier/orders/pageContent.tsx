@@ -35,12 +35,11 @@ export default function OrdersPageContent() {
   const limit = 40;
 
   const today = new Date();
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(today.getDate() - 29);
+  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
   const formatDate = (date: Date) => date.toISOString().slice(0, 10);
 
-  const defaultDateFrom = formatDate(thirtyDaysAgo);
+  const defaultDateFrom = formatDate(firstDayOfMonth);
   const defaultDateTo = formatDate(today);
 
   const [dateFrom, setDateFrom] = useState(
