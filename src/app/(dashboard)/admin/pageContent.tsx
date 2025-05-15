@@ -36,7 +36,7 @@ export default function AdminPageContent() {
   const currentPage = Number(searchParams.get("page")) || 1;
   const limit = 10;
 
-  const { data, isLoading } = useApplications(currentPage, limit);
+  const { data, isLoading, refetch } = useApplications(currentPage, limit);
   const [selectedAppId, setSelectedAppId] = useState<number | null>(null);
   const [selectedAppData, setSelectedAppData] = useState<{
     login: string;
@@ -76,7 +76,8 @@ export default function AdminPageContent() {
     });
   };
 
-  const handleNewSupplierSelect = () => {
+  const handleNewSupplierSelect = async () => {
+    await refetch();
     enqueueSnackbar("Заявка принята", { variant: "success" });
   };
 
@@ -221,7 +222,8 @@ export default function AdminPageContent() {
             setIsSelectModalOpen(false);
             setSelectedAppId(null);
           }}
-          onSelect={handleNewSupplierSelect}
+          onSelect={handleSupplierSelect}
+          onSelectNew={handleNewSupplierSelect}
           email={currentApplicationInfo?.email || ""}
           contactPerson={currentApplicationInfo?.fullName || ""}
           phone={currentApplicationInfo?.phone || ""}

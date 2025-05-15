@@ -37,7 +37,12 @@ export default function OrdersPageContent() {
   const today = new Date();
   const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
-  const formatDate = (date: Date) => date.toISOString().slice(0, 10);
+  const formatDate = (date: Date) => {
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, "0");
+    const day = `${date.getDate()}`.padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
 
   const defaultDateFrom = formatDate(firstDayOfMonth);
   const defaultDateTo = formatDate(today);
@@ -136,14 +141,16 @@ export default function OrdersPageContent() {
             />
           </div>
         </div>
-        <div>
-          {`Итого за период: количество `}
-          <span className="font-bold">{`${data?.totalDeliveryCount}`}</span>
-          {`, сумма `}
-          <span className="font-bold">{`${data?.totalPriceIn?.toLocaleString(
-            "ru-RU"
-          )} ₽`}</span>
-        </div>
+        {!isLoading && (
+          <div>
+            {`Итого за период: количество `}
+            <span className="font-bold">{`${data?.totalDeliveryCount}`}</span>
+            {`, сумма `}
+            <span className="font-bold">{`${data?.totalPriceIn?.toLocaleString(
+              "ru-RU"
+            )} ₽`}</span>
+          </div>
+        )}
       </div>
 
       {isLoading ? (

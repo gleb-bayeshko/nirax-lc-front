@@ -32,10 +32,10 @@ api.interceptors.response.use(
           const res = await axios.post(
             `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
             {
-              refresh_token: refreshToken,
+              refreshToken: refreshToken,
             }
           );
-          localStorage.setItem("accessToken", res.data.access_token);
+          localStorage.setItem("accessToken", res.data.accessToken);
           error.config.headers[
             "Authorization"
           ] = `Bearer ${res.data.access_token}`;
