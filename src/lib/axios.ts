@@ -42,6 +42,10 @@ api.interceptors.response.use(
           return api(error.config);
         } catch (_refreshError) {
           enqueueSnackbar("Сессия истекла", { variant: "error" });
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("role");
+          localStorage.removeItem("supplierId");
           window.location.href = "/";
         }
       }
